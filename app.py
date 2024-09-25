@@ -87,7 +87,7 @@ def submit_request():
 
 if __name__ == "__main__":
     # Debug mode in development environment
-    app.run(debug=True)
+    app.run(debug=False)
 
     # Production environment
     # server = WSGIServer(('', 8080), app)

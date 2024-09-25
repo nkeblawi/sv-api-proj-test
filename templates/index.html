@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plot teleconnection data</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Teleconnection Plotter</h1>
+        <form class="userinput" method="POST" action="/plot">
+            <div>
+                <p>Pick a model:</p>
+                <select id="model" name="model">
+                    <option value="gfs">GFS</option>
+                    <option value="ecmwf">ECMWF</option>
+                </select>
+            </div>
+            <div>
+                <p>Pick a model run:</p>
+                <select id="run" name="model_run">
+                    <option value="00z">00</option>
+                    <option value="06z">06</option>
+                    <option value="12z">12</option>
+                    <option value="18z">18</option>
+                </select>
+            </div>
+            <div>
+                <p>Pick an index to plot:</p>
+                <select id="index" name="tindex">
+                    <option value="pna">PNA</option>
+                    <option value="nao">NAO</option>
+                    <option value="epo">EPO</option>
+                </select>
+            </div>
+            <div>
+                <p>Choose the date:</p>
+                <input type="date" id="date" name="date" value="{{ selected_date }}">
+            </div>
+            <input type="submit" value="Plot" class="plot-button">
+        </form>
+        {% if plot_url %}
+            <div>
+                <img src="data:image/png;base64,{{ plot_url }}" alt="Teleconnection Plot">
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

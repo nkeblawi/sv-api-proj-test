@@ -1,12 +1,13 @@
 import os
 import base64
 import http.client
-from io import BytesIO
+from io import BytesIO, StringIO
 from flask import Flask, render_template, request
 from gevent.pywsgi import WSGIServer
 from dotenv import load_dotenv
 import matplotlib
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Load environment variables
 load_dotenv()
@@ -55,6 +56,7 @@ def submit_request():
         # Get the response
         res = conn.getresponse()
         data = res.read()
+        print(data)
 
         # Decode the byte data into a string and split the x and y values
         data_str = data.decode("utf-8")
@@ -66,7 +68,9 @@ def submit_request():
 
         # Convert x to integers and y to floating-point numbers
         x = [int(i) for i in x_str]
-        y = [float(i) for i in y_str]
+        y = [
+            float(i) for i in y_str
+        ]  # debug this line (not all models have the same timeline)
 
         # Store the data in the model dictionary
         model_data[model] = (x, y)

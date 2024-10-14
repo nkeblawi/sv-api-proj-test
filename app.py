@@ -76,6 +76,22 @@ def submit_request():
         model_data[model] = (x, y)
 
     # Plot the data
+    plot_url = plot_data(model_data, tindex, model_run, selected_date)
+
+    return render_template("index.html", plot_url=plot_url, selected_date=selected_date)
+
+
+if __name__ == "__main__":
+    # Debug mode in development environment
+    app.run(debug=False)
+
+    # Production environment
+    # server = WSGIServer(('', 8080), app)
+    # server.serve_forever()
+
+
+# Function to plot the data:
+def plot_data(model_data, tindex, model_run, date):
     fig = plt.figure(figsize=(12, 8))  # Set figure size
     ax = fig.add_subplot(111)
 
@@ -97,13 +113,4 @@ def submit_request():
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode("utf8")
 
-    return render_template("index.html", plot_url=plot_url, selected_date=selected_date)
-
-
-if __name__ == "__main__":
-    # Debug mode in development environment
-    app.run(debug=False)
-
-    # Production environment
-    # server = WSGIServer(('', 8080), app)
-    # server.serve_forever()
+    return plot_url

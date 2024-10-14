@@ -36,45 +36,56 @@ def index():
 @app.route("/plot", methods=["POST"])  # form action "/plot" method="get" in index.html
 def submit_request():
     # Get user inputs
-    model = request.form["model"]
+    models = request.form.getlist("model")  # Get a list of selected models
     selected_date = request.form["date"]
     date = selected_date.replace("-", "")
     model_run = request.form["model_run"]
     tindex = request.form["tindex"]
     file_suffix = "-forecast.csv"  # hardcoded
 
-    # Build the connection request URL with all the inputs, API key, and headers
-    teleconn_URL = f"/{sv_api_version}/model-data/{model}/{date}/{model_run}/teleconnection/{tindex}{file_suffix}?apikey={sv_api_key}"
-    conn.request("GET", teleconn_URL, headers=headers)
+    # Initialize a dictionary to hold data for each model
+    model_data = {}
 
-    # Get the response
-    res = conn.getresponse()
-    data = res.read()
+    # Loop through each selected model and make API requests
+    for model in models:
+        # Build the connection request URL with all the inputs, API key, and headers
+        teleconn_URL = f"/{sv_api_version}/model-data/{model}/{date}/{model_run}/teleconnection/{tindex}{file_suffix}?apikey={sv_api_key}"
+        conn.request("GET", teleconn_URL, headers=headers)
 
-    # Decode the byte data into a string and split the x and y values
-    data_str = data.decode("utf-8")
-    x_str, y_str = data_str.split("\n", 1)
-    x_str = x_str.split(",")[1:]  # Remove the 'member' part
-    y_str = y_str.strip().split(",")[
-        1:
-    ]  # Strip the trailing \n and remove the leading 0
+        # Get the response
+        res = conn.getresponse()
+        data = res.read()
 
-    # Convert x to integers and y to floating-point numbers
-    x = [int(i) for i in x_str]
-    y = [float(i) for i in y_str]
+        # Decode the byte data into a string and split the x and y values
+        data_str = data.decode("utf-8")
+        x_str, y_str = data_str.split("\n", 1)
+        x_str = x_str.split(",")[1:]  # Remove the 'member' part
+        y_str = y_str.strip().split(",")[
+            1:
+        ]  # Strip the trailing \n and remove the leading 0
+
+        # Convert x to integers and y to floating-point numbers
+        x = [int(i) for i in x_str]
+        y = [float(i) for i in y_str]
+
+        # Store the data in the model dictionary
+        model_data[model] = (x, y)
 
     # Plot the data
     fig = plt.figure(figsize=(12, 8))  # Set figure size
     ax = fig.add_subplot(111)
-    ax.plot(x, y, marker="o", color="b")
-    ax.set_title(
-        tindex.upper() + " Forecast Plot: " + model_run + " " + model + " " + date
-    )
+
+    # Plot the data for each model
+    for model, (x, y) in model_data.items():
+        ax.plot(x, y, marker="o", label=model)
+
+    ax.set_title(tindex.upper() + " Forecast Plot: " + model_run + " " + " " + date)
     ax.set_xlabel("Hour")
     ax.set_ylabel("Daily " + tindex.upper())
     ax.set_ylim(-4, 4)
     ax.axhline(y=0, color="green", linewidth=2, linestyle="--")
     ax.grid(True)
+    ax.legend()
 
     # Save the plot to a BytesIO object and pass it to the /plot/ page
     img = BytesIO()

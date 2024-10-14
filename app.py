@@ -58,22 +58,20 @@ def submit_request():
         data = res.read()
         print(data)
 
-        # Decode the byte data into a string and split the x and y values
+        # Decode the byte data into a string and split into lines
         data_str = data.decode("utf-8")
-        x_str, y_str = data_str.split("\n", 1)
-        x_str = x_str.split(",")[1:]  # Remove the 'member' part
-        y_str = y_str.strip().split(",")[
-            1:
-        ]  # Strip the trailing \n and remove the leading 0
+        df = pd.read_csv(StringIO(data_str), header=None)
+        x_values = df.iloc[:, 0].astype(int).values
 
-        # Convert x to integers and y to floating-point numbers
-        x = [int(i) for i in x_str]
-        y = [
-            float(i) for i in y_str
-        ]  # debug this line (not all models have the same timeline)
+        print(x_values)
+
+        y = df.iloc[:, 1:].astype(float).values
+        y_values = y.mean(axis=0).values
+
+        print(y_values)
 
         # Store the data in the model dictionary
-        model_data[model] = (x, y)
+        model_data[model] = (x_values, y_values)
 
     # Plot the data
     plot_url = plot_data(model_data, tindex, model_run, selected_date)

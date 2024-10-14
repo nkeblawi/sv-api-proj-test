@@ -50,3 +50,10 @@ h1, h2, h3 {
     font-family: 'Verdana', sans-serif;
     cursor: pointer;
 }
+
+.model-options {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-right: 20px;
+    text-align: left;
+}

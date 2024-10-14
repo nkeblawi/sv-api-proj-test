@@ -10,14 +10,26 @@
     <div class="container">
         <h1>Teleconnection Plotter</h1>
         <form class="userinput" method="POST" action="/plot">
-            <div>
-                <p>Pick a model:</p>
-                <select id="model" name="model" multiple>
-                    <option value="gfs">GFS</option>
-                    <option value="gfs-ens-mem">GEFS</option>
-                    <option value="ecmwf">ECMWF</option>
-                    <option value="ecmwf-eps">EPS</option>
-                </select>
+            <p>Pick a model:</p>
+            <div style="display: flex; flex-direction: row;">
+                <div class="model-options">
+                    <label>
+                        <input type="checkbox" name="model" value="gfs"> GFS
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" name="model" value="gfs-ens-mem"> GEFS
+                    </label>
+                </div>
+                <div class="model-options">
+                    <label>
+                        <input type="checkbox" name="model" value="ecmwf"> ECMWF
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" name="model" value="ecmwf-eps"> EPS
+                    </label>
+                </div>
             </div>
             <div>
                 <p>Pick a model run:</p>

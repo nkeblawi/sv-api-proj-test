@@ -12,9 +12,11 @@
         <form class="userinput" method="POST" action="/plot">
             <div>
                 <p>Pick a model:</p>
-                <select id="model" name="model">
+                <select id="model" name="model" multiple>
                     <option value="gfs">GFS</option>
+                    <option value="gfs-ens-mem">GEFS</option>
                     <option value="ecmwf">ECMWF</option>
+                    <option value="ecmwf-eps">EPS</option>
                 </select>
             </div>
             <div>

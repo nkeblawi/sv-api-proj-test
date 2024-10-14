@@ -9,6 +9,12 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
+### ---------------------------------------------------- ###
+### ENVIRONMENT SETUP
+### ---------------------------------------------------- ###
+
+
 # Load environment variables
 load_dotenv()
 sv_api_key = os.getenv("SV_API_KEY")
@@ -25,6 +31,11 @@ matplotlib.use("Agg")
 # Start the Flask app in a web browser
 app = Flask(__name__)
 app.static_folder = "static"
+
+
+### ---------------------------------------------------- ###
+### DATA AND VISUALIZATION FUNCTIONS
+### ---------------------------------------------------- ###
 
 
 # Function to pull data into a dataframe
@@ -80,6 +91,11 @@ def plot_data(model_data, tindex, model_run, date):
     plot_url = base64.b64encode(img.getvalue()).decode("utf8")
 
     return plot_url
+
+
+### ---------------------------------------------------- ###
+### WEB INTERFACE API ROUTES
+### ---------------------------------------------------- ###
 
 
 # Load the index page

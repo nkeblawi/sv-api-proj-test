@@ -54,7 +54,6 @@ def pull_data(models, tindex, model_run, date, file_suffix):
         # Decode the byte data into a string and split into lines
         data_str = data.decode("utf-8")
         df = pd.read_csv(StringIO(data_str), header=None)
-        print(teleconn_URL)
 
         # Get the x and y values; average the y values by hour if the model has ensembles
         x_values = df.iloc[0, 1:].astype(int).values

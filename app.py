@@ -22,7 +22,9 @@ st.write(
 
 # Pick a model:
 models = []
-model_inputs = st.multiselect("Pick a model", ["GFS", "GEFS", "ECMWF", "EPS"])
+model_inputs = st.multiselect(
+    "Pick a model (you can choose more than one):", ["GFS", "GEFS", "ECMWF", "EPS"]
+)
 for option in model_inputs:
     if option == "GFS":
         models.append("gfs")
@@ -34,13 +36,13 @@ for option in model_inputs:
         models.append("ecmwf-eps")
 
 # Pick a model run:
-run = st.selectbox("Pick a model run", ["00z", "06z", "12z", "18z"])
+run = st.selectbox("Pick a model run:", ["00z", "06z", "12z", "18z"])
 
 # Select an index
-tindex = st.selectbox("Select an index", ["PNA", "NAO", "EPO"]).lower()
+tindex = st.selectbox("Choose a teleconnection index:", ["PNA", "NAO", "EPO"]).lower()
 
 # Date input
-selected_date = st.date_input("Choose the date", value=None, format="YYYY-MM-DD")
+selected_date = st.date_input("Select the date:", value=None, format="YYYY-MM-DD")
 
 # Plot the graph
 if st.button("Plot"):

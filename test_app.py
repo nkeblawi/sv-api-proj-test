@@ -21,7 +21,7 @@ sv_url = os.getenv("SV_URL")
 sv_api_version = os.getenv("SV_API_VERSION")
 
 # Open a connection to the SV API
-conn = http.client.HTTPSConnection(sv_url)
+conn = http.client.HTTPSConnection(sv_url, timeout=60)
 headers = {"Accept": "text/csv, text/html"}
 
 # Set non-interactive backend for matplotlib

@@ -49,21 +49,28 @@ if st.button("Plot"):
     file_suffix = "-forecast.csv"  # hardcoded
     date = str(selected_date).replace("-", "")
 
-    # Pull model data
-    model_data = pull_data(models, tindex, run, date, file_suffix)
+    try:
+        # Pull model data
+        model_data = pull_data(models, tindex, run, date, file_suffix)
 
-    # Plot the data
-    fig = plt.figure(figsize=(12, 8))  # Set figure size
-    ax = fig.add_subplot(111)
+        # Plot the data
+        fig = plt.figure(figsize=(12, 8))  # Set figure size
+        ax = fig.add_subplot(111)
 
-    for model, (x, y) in model_data.items():
-        ax.plot(x, y, marker="o", label=model)
+        for model, (x, y) in model_data.items():
+            ax.plot(x, y, marker="o", label=model)
 
-    ax.set_title(tindex.upper() + " Forecast Plot: " + run + " " + " " + date)
-    ax.set_xlabel("Hour")
-    ax.set_ylabel("Daily " + tindex.upper())
-    ax.set_ylim(-4, 4)
-    ax.axhline(y=0, color="green", linewidth=2, linestyle="--")
-    ax.grid(True)
-    ax.legend()
-    st.pyplot(fig)
+        ax.set_title(tindex.upper() + " Forecast Plot: " + run + " " + " " + date)
+        ax.set_xlabel("Hour")
+        ax.set_ylabel("Daily " + tindex.upper())
+        ax.set_ylim(-4, 4)
+        ax.axhline(y=0, color="green", linewidth=2, linestyle="--")
+        ax.grid(True)
+        ax.legend()
+        st.pyplot(fig)
+    except http.client.RemoteDisconnected:
+        st.error(
+            "Failed to retrieve data: Remote server disconnected. Please try again."
+        )
+    except Exception as e:
+        st.error(f"An error occurred while retrieving data: {e}")
